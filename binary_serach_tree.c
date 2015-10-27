@@ -7,6 +7,7 @@ typedef struct _tree {
 	struct _tree *right;
 } tree, *ptree;
 
+/* create a new node */
 ptree newnode(int val) {
 	ptree node = (ptree)malloc(sizeof(tree));
 	
@@ -16,6 +17,7 @@ ptree newnode(int val) {
 	return node;
 }
 
+/* insert new node at appropriate place */
 ptree insert(ptree root, int val)
 {
 	if (root == NULL) {
@@ -31,6 +33,7 @@ ptree insert(ptree root, int val)
 	return root;
 }
 
+/* return size of BST */
 int size(ptree root)
 {
 	if (root == NULL) {
@@ -40,6 +43,7 @@ int size(ptree root)
 	return size(root->left) + size(root->right) + 1;
 }
 
+
 int _isvalid(ptree root, int min, int max) {
     if (root == NULL) return 1;
     
@@ -48,11 +52,16 @@ int _isvalid(ptree root, int min, int max) {
     return _isvalid(root->left, min, root->val) && _isvalid(root->right, root->val, max);
 }
  
+/* Return true if a binary tree is a BST */
 int isValidBST(ptree A) {
     return _isvalid(A, INT_MIN, INT_MAX);
 }
 
 
+/* 
+ Compute the "maxDepth" of a tree -- the number of nodes along 
+ the longest path from the root node down to the farthest leaf node. 
+*/ 
 int maxDepth(ptree root)
 {
 	int l, r;
@@ -66,6 +75,11 @@ int maxDepth(ptree root)
 	return (l > r) ? l + 1 : r + 1;
 }
 
+/* 
+ Given a  binary search tree, 
+ return the minimum data value found in that tree. 
+ Note that the entire tree does not need to be searched. 
+*/ 
 int minValue(ptree root)
 {
 	if (root == NULL) {
@@ -79,6 +93,7 @@ int minValue(ptree root)
 	return root->val;
 }
 
+/* inorder traversal of BST */
 void printInorder(ptree root)
 {
 	if (root == NULL) return;
@@ -88,6 +103,7 @@ void printInorder(ptree root)
 	printInorder(root->right);
 }
 
+/* postorder traversal of BST */
 void printPostorder(ptree root)
 {
 	if (root == NULL) return;
@@ -97,6 +113,11 @@ void printPostorder(ptree root)
 	printf("%d, ", root->val);
 }
 
+/* 
+ Given a tree and a sum, return true if there is a path from the root 
+ down to a leaf, such that adding up all the values along the path 
+ equals the given sum.
+*/ 
 int hasPathSum(ptree root, int sum)
 {
 	int val;
@@ -127,6 +148,10 @@ void _printpaths(ptree root, int *res, int i)
 	_printpaths(root->right, res, i);
 }
 
+/* 
+ Given a binary tree, print out all of its root-to-leaf 
+ paths, one per line. Uses a recursive helper to do the work. 
+*/ 
 void printPaths(ptree root)
 {
 	int res[1000];
@@ -144,12 +169,31 @@ int _sym(ptree A, ptree B)
     return _sym(A->left, B->right) && _sym(A->right, B->left);
 }
 
+/* Given a binary tree, check whether it is a mirror of 
+   itself (ie, symmetric around its center).
+   
+   Following is symmetric :
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3 
+
+The following is not symmetric:
+
+ 1
+   / \
+  2   2
+   \   \
+   3    3
+*/
 int isSymmetric(ptree A) {
     if (A == NULL) return 1;
     
     return _sym(A->left, A->right);
 }
 
+/* Given a BST node, return the node which has value just greater than the given node.*/
 ptree getSuccessor(ptree A, int B) {
     ptree cur = A;
     ptree succ = NULL;
@@ -184,6 +228,26 @@ ptree getSuccessor(ptree A, int B) {
     return succ;
 }
 
+/* 
+ For each node in a binary search tree, 
+ create a new duplicate node, and insert 
+ the duplicate as the left child of the original node. 
+ The resulting tree should still be a binary search tree.
+ So the tree... 
+    2 
+   / \ 
+  1   3
+
+ Is changed to... 
+       2 
+      / \ 
+     2   3 
+    /   / 
+   1   3 
+  / 
+ 1
+
+*/ 
 void doubleTree(ptree root)
 {
 	ptree temp;
@@ -198,6 +262,10 @@ void doubleTree(ptree root)
 	root->left = temp;
 }
 
+/* 
+ Given two trees, return true if they are 
+ structurally identical. 
+*/ 
 int isSameTree(ptree A, ptree B) {
     if (A == NULL && B == NULL) return 1;
     
@@ -208,6 +276,26 @@ int isSameTree(ptree A, ptree B) {
     return (isSameTree(A->left, B->left) && isSameTree(A->right, B->right));
 }
 
+/*
+Given a binary tree, invert the binary tree and return it. 
+Look at the example for more details.
+
+Example : 
+Given binary tree
+
+     1
+   /   \
+  2     3
+ / \   / \
+4   5 6   7
+invert and return
+
+     1
+   /   \
+  3     2
+ / \   / \
+7   6 5   4
+*/
 ptree invertTree(ptree root) {
     ptree temp;
     if (root == NULL) return root;
@@ -222,6 +310,10 @@ ptree invertTree(ptree root) {
     return root;
 }
 
+/* 
+ For the key values 1...numKeys, how many structurally unique 
+ binary search trees are possible that store those keys.
+*/ 
 int countTrees(int keys)
 {
 	int count = 0;
